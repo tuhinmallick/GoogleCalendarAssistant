@@ -8,9 +8,7 @@ from dependencies import get_db
 
 def get_calendar_events(user_email, calendar_id, start_time, end_time):
     db = get_db()
-    user = db.users.find_one({"email": user_email})
-
-    if user:
+    if user := db.users.find_one({"email": user_email}):
         access_token = user.get("access_token")
 
         # Create the API endpoint
@@ -46,9 +44,7 @@ def get_calendar_events(user_email, calendar_id, start_time, end_time):
 
 def get_calendar_timezone(user_email, calendar_id):
     db = get_db()
-    user = db.users.find_one({"email": user_email})
-
-    if user:
+    if user := db.users.find_one({"email": user_email}):
         access_token = user.get("access_token")
 
         # Google Calendar API endpoint to get calendar details
@@ -89,7 +85,7 @@ def create_event(user_email, calendar_id, event_name, start_datetime, end_dateti
 
         # Create the event data
         event_data = {
-            "summary": event_name + " (created by Calvin)",
+            "summary": f"{event_name} (created by Calvin)",
             "start": {
                 "dateTime": start_datetime,
                 "timeZone": timezone,  # Replace with your time zone, e.g., "America/New_York"

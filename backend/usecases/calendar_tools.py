@@ -26,10 +26,7 @@ class GetCalendarEventsTool(BaseTool):
     args_schema: Type[BaseModel] = CalendarEventSearchInput
 
     def _run(self, user_email: str, calendar_id: str, start_date: str, end_date: str):
-        events_response = get_calendar_events(
-            user_email, calendar_id, start_date, end_date
-        )
-        return events_response
+        return get_calendar_events(user_email, calendar_id, start_date, end_date)
 
     def _arun(self):
         raise NotImplementedError("get_calendar_events does not support async")
@@ -154,10 +151,9 @@ Useful when you want to create a calendar event given a calendar id, event name,
         start_datetime: str,
         end_datetime: str,
     ):
-        events_response = create_event(
+        return create_event(
             user_email, calendar_id, event_name, start_datetime, end_datetime
         )
-        return events_response
 
     def _arun(self):
         raise NotImplementedError("create_calendar_event does not support async")
