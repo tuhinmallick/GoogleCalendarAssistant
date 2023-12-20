@@ -9,8 +9,7 @@ router = APIRouter()
 @router.post("")
 async def create_or_update_user(user: User, database=Depends(get_db)):
     user_doc = user.dict()
-    result = database.users.find_one({"email": user.email})
-    if result:
+    if result := database.users.find_one({"email": user.email}):
         database.users.update_one({"email": user.email}, {"$set": user_doc})
         return UserResponse(id=str(result["_id"]), email=user.email)
     else:
@@ -20,8 +19,7 @@ async def create_or_update_user(user: User, database=Depends(get_db)):
 
 @router.get("/{email}")
 def get_user_by_email(email: str, database=Depends(get_db)):
-    user = database.users.find_one({"email": email})
-    if user:
+    if user := database.users.find_one({"email": email}):
         return {"id": str(user["_id"]), "access_token": user["access_token"]}
     else:
         raise HTTPException(status_code=404, detail="User not found")

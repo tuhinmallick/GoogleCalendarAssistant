@@ -11,9 +11,7 @@ LIST_CALENDARS_ENDPOINT = "https://www.googleapis.com/calendar/v3/users/me/calen
 
 @router.post("/upcoming_month")
 def get_calendars_list(event_list_request: EventListRequest, db=Depends(get_db)):
-    user = db.users.find_one({"email": event_list_request.email})
-
-    if user:
+    if user := db.users.find_one({"email": event_list_request.email}):
         access_token = user.get("access_token")
         # Determine the date range
         today = datetime.utcnow()
